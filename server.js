@@ -2,7 +2,9 @@
 
 var express = require('express');
 var cors = require('cors');
-const upload = require('multer');
+
+var multer  = require('multer')
+var upload = multer({ dest: 'uploads/' })
 
 var app = express();
 
@@ -16,7 +18,15 @@ app.get('/', function (req, res) {
 
 
 app.post('/api/fileanalyse', upload.single('upfile'), (req, res) => {
-  res.send(req.file);
+  const file = req.file;
+  
+  let metadata = {
+    name: file.originalname,
+    type: file.mimetype,
+    size: file.size
+  };
+  
+  res.send(metadata);
 });
 
 
